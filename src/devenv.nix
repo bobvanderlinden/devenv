@@ -47,7 +47,7 @@ pkgs.writeScriptBin "devenv" ''
   fi
 
   mkdir -p "$GC_ROOT"
-  GC_DIR="$GC_ROOT/$(date +%s%3N)"
+  GC_DIR="$GC_ROOT/$(${pkgs.coreutils}/bin/date +%s%3N)"
 
   function add_gc {
     name=$1
@@ -107,7 +107,7 @@ pkgs.writeScriptBin "devenv" ''
   Usage: container [options] CONTAINER-NAME
 
   Options:
-    --registry         Registry to copy the container to.
+    --registry=<reg>   Registry to copy the container to.
     --copy             Copy the container to the registry.
     --copy-args=<args> Arguments passed to `skopeo copy`.
     --docker-run       Execute `docker run`.
@@ -198,12 +198,18 @@ pkgs.writeScriptBin "devenv" ''
       fi
 
       if ! grep -q "devenv" .gitignore; then
-        echo "Appending .devenv* and devenv.local.nix to .gitignore"
+        echo "Appending defaults to .gitignore"
 
         echo "" >> .gitignore
         echo "# Devenv" >> .gitignore
         echo ".devenv*" >> .gitignore
         echo "devenv.local.nix" >> .gitignore
+        echo "" >> .gitignore
+        echo "# direnv" >> .gitignore
+        echo ".direnv" >> .gitignore
+        echo "" >> .gitignore
+        echo "# pre-commit" >> .gitignore
+        echo ".pre-commit-config.yaml" >> .gitignore
         echo "" >> .gitignore
       fi
       echo "Done."
