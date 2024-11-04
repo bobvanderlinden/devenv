@@ -244,6 +244,7 @@ in
       (lib.optional cfg.bun.install.enable ''
         source ${initBunScript}
       '')
+      export PATH="${nodeModulesPath}/.bin:$PATH"
     );
   };
 }
